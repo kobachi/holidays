@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>holidays.js</title>
+</head>
+<body>
+<input type="number" id="year" value="2016" min="2016" max="2099" />
+<ol id="result"></ol>
+<script src="holidays.js"></script>
+<script>
+(function () {
+
+var DAYS = [ "日", "月", "火", "水", "木", "金", "土" ];
+
+function formatDate (d) {
+	return [
+			d.getFullYear(),
+			"/",
+			d.getMonth() < 9 ? "0" + (d.getMonth() + 1) : d.getMonth() + 1,
+			"/",
+			d.getDate() < 10 ? "0" + d.getDate() : d.getDate(),
+			" (",
+			DAYS[d.getDay()],
+			")",
+			d.name ? " - " + d.name : ""
+	].join("");
+}
+
+var year = document.querySelector("#year");
+var ol = document.querySelector("#result");
+
+function enumHolidays() {
+	ol.innerHTML = "";
+	holidayManager.enumHolidays(year.value).forEach(function (d) {
+		var li = document.createElement("li");
+		li.appendChild(document.createTextNode(formatDate(d)));
+		ol.appendChild(li);
+	});
+}
+
+year.addEventListener("change", enumHolidays);
+window.addEventListener("DOMContentLoaded", enumHolidays);
+
+})();
+</script>
+</body>
+</html>
